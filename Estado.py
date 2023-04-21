@@ -1,0 +1,2 @@
+class Estado:
+    pass
