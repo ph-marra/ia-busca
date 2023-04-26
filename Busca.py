@@ -66,8 +66,6 @@ class Busca:
         return False
 
 
-
-
     @staticmethod
     def bli(problema: Problema) -> None:
         pass

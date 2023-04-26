@@ -4,8 +4,9 @@ import Solucao
 class Problema:
 
 
-    def __init__(self, einicial: Estado) -> None:
+    def __init__(self, einicial: Estado, emeta: Estado) -> None:
         self.einicial: Estado = einicial
+        self.emeta: Estado = emeta
         self.solucao: Solucao = None
 
 

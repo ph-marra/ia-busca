@@ -1,35 +1,24 @@
 import Problema
-import Estado
+import EstadoQuebraCabeca
 
 class QuebraCabeca(Problema):
 
 
-    def __init__(self) -> None:
-        einicial = Estado([
-                    [2, 8, 3],
-                    [1, 6, 4],
-                    [7, 0, 5]
-                   ])
-        
-        super().__init__(einicial)
+    def __init__(self, einicial: EstadoQuebraCabeca, emeta: EstadoQuebraCabeca) -> None:       
+        super().__init__(einicial, emeta)
 
-    
-    def teste_objetivo(self, estado: Estado) -> bool:
-        meta = Estado([[1, 2, 3],
-                [8, 0, 4],
-                [7, 6, 5],
-               ])
-        
-        n = len(self.estado.dados)
+
+    def teste_objetivo(self, estado: EstadoQuebraCabeca) -> bool:
+        n = len(estado.dados)
         for i in range(0, n):
             for j in range(0, n):
-                if self.einicial.dados[i][j] != meta.dados[i][j]:
+                if estado.dados[i][j] != self.emeta.dados[i][j]:
                     return False
                 
         return True
         
 
-    def operador(self, estado: Estado) -> list[Estado.Estado]:
+    def operador(self, estado: EstadoQuebraCabeca) -> list[EstadoQuebraCabeca.EstadoQuebraCabeca]:
         n = len(self.estado.dados)
 
         for i in range(0, n):
