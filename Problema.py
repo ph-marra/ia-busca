@@ -1,5 +1,5 @@
-import Estado
-import Solucao
+from Estado import Estado
+from Solucao import Solucao
 
 class Problema:
 
@@ -14,7 +14,7 @@ class Problema:
         pass
 
 
-    def operador(self, estado: Estado) -> list[Estado.Estado]:
+    def operador(self, estado: Estado) -> list[Estado]:
         pass
     
 

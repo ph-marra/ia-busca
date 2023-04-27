@@ -1,11 +1,12 @@
-import Problema
-import Solucao
+from Problema import Problema
+from Solucao import Solucao
+from Estado import Estado
 
 class Busca:
 
 
     @staticmethod
-    def bpl(problema: Problema, l: int) -> None:
+    def bpl(problema: Problema, l: int) -> bool:
         # Tratar eavisitar como pilha
 
         # Como precisamos da altura de cada estado na pilha de busca,
