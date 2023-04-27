@@ -3,13 +3,38 @@ from Estado import Estado
 class EstadoQuebraCabeca(Estado):
 
     @staticmethod
-    def h1(meta) -> int:
-        pass
+    def h1(estado, meta) -> int:
+        soma = 0
+        n = len(estado.dados)
+
+        for i in range(0, n):
+            for j in range(0, n):
+                if estado.dados[i][j] == meta.dados[i][j]:
+                    soma += 1
+
+        return soma
+
 
     @staticmethod
-    def h2(meta) -> int:
-        pass
+    def h2(estado, meta) -> int:
+        soma = 0
+        n = len(estado.dados)
+        
+        for i in range(0, n):
+            for j in range(0, n):
 
+                bof = False
+                for k in range(0, n):
+                    for l in range(0, n):
+                        if estado.dados[i][j] == meta.dados[k][l]:
+                            soma += abs(k - i) + abs(l - j)
+                            bof = True
+                            break
+                    if bof:
+                        break
+
+        return soma
+    
 
     def __init__(self, dados: list[object], heuristica='h1') -> None:
         #n = len(dados)
@@ -25,7 +50,7 @@ class EstadoQuebraCabeca(Estado):
         
 
     def h(self, meta) -> int:
-        return self.__h__(meta)
+        return self.__h__(self, meta)
     
     def get_dados(self):
         return self.dados
