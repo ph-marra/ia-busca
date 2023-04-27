@@ -8,12 +8,19 @@ class Solucao:
         self.cmeta = cmeta
 
     def __str__(self):
-        print(self.nvisitados)
+        s = ''
+        
+        s += 'Visitados = '
+        s += str(self.nvisitados)
 
-        print("\n-------------------------------\n")
-
+        s += "\n-------------------------------\n"
+        
         for e in self.cmeta:
-            print(e.dados)
+            s += '\n******\n'
+            s += str(e.dados)
+            s += '\n******\n'
+
+        return s
 
 
     

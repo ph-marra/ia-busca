@@ -35,7 +35,7 @@ class Busca:
             # assim, eatual é o estado meta, dessa forma, 
             # retornamos que a busca foi sucedida (True)
             if problema.teste_objetivo(eatual):
-                problema.ecaminho = Solucao(len(evisitados), ecaminho)
+                problema.solucao = Solucao(len(evisitados), ecaminho)
                 return True
 
             # Se a altura do estado atual é l, podamos essa busca,

@@ -35,7 +35,7 @@ class EstadoQuebraCabeca(Estado):
 
         for i in range(0, n):
             for j in range(0, n):
-                if other[i][j] != self.dados[i][j]:
+                if other.dados[i][j] != self.dados[i][j]:
                     return False
                 
         return True

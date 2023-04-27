@@ -40,6 +40,6 @@ class QuebraCabeca(Problema):
             nc[vi][vj] = nc[x][y]
             nc[x][y] = 0
 
-            nestados.append(nc)
+            nestados.append(EstadoQuebraCabeca(nc))
 
         return nestados
