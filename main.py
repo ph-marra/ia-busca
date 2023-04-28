@@ -14,7 +14,19 @@ def main():
 
     problema = QuebraCabeca(einicial, emeta)
 
+    print('Busca Profundidade')
     if Busca.bpl(problema, 5):
+        print(problema.solucao)
+    else:
+        print("Não tem solução!")
+
+    einicial = EstadoQuebraCabeca([[2, 8, 3], [1, 6, 4], [7, 0, 5]])
+    emeta = EstadoQuebraCabeca([[1, 2, 3], [8, 0, 4], [7, 6, 5]])
+
+    problema = QuebraCabeca(einicial, emeta)
+
+    print('Busca Largura')
+    if Busca.bli(problema):
         print(problema.solucao)
     else:
         print("Não tem solução!")

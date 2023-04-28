@@ -68,8 +68,56 @@ class Busca:
 
 
     @staticmethod
-    def bli(problema: Problema) -> None:
-        pass
+    def bli(problema: Problema) -> bool:
+        # Tratar estadoa a visitar como fila
+
+        # Então, guardamos uma fila de estados
+        # Inicialmente, essa fila tem o estado inicial do problema
+        eavisitar = [problema.einicial]
+
+        # Guarda os estados visitados na busca
+        evisitados = []
+
+        # Guarda o caminho da solução, se encontrada
+        ecaminho = []
+
+        # Enquanto tiver estados na fila de estados a visitar
+        while eavisitar:
+
+            # Desenfila o próximo estado a buscar
+            eatual = eavisitar.pop(0)
+
+            # Marca atual como visitado
+            # Adiciona atual no fim do possível caminho da solução
+            evisitados.append(eatual)
+            ecaminho.append(eatual)
+
+            # Se chegamos em um estado meta, paramos a busca,
+            # assim, eatual é o estado meta, dessa forma,
+            # retornamos que a busca foi sucedida (True)
+            if problema.teste_objetivo(eatual):
+                problema.solucao = Solucao(len(evisitados), ecaminho)
+                return True
+
+
+            # Caso contrário, operamos sob o estado atual para achar
+            # novos estados de busca possíveis estados meta
+            nestados = problema.operador(eatual)
+
+            # Empilhe na pilha os estados e que ainda não foram visitados
+            # Todos esses novos não-visitados tem +1 de altura
+            nvisitados = list(filter(lambda e: e not in evisitados, nestados))
+            eavisitar.extend(nvisitados)
+
+            # Se não tem mais nenhum filho não-visitado (nvisitado é vazio),
+            # então o estado atual não faz parte do caminho solução, logo
+            # devemos tirar ele do caminho de estados (ele está no final)
+            if not nvisitados:
+                ecaminho.pop()
+
+        # Se estados a visitar está vazio, é porque não achou nenhum estado
+        # meta dada essa profundidade l, então solução é nula
+        return False
 
 
     @staticmethod
