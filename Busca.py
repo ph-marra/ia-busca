@@ -51,16 +51,19 @@ class Busca:
             # novos estados de busca possíveis estados meta
             nestados = problema.operador(eatual)
             
-            # Empilhe na pilha os estados e que ainda não foram visitados
-            # Todos esses novos não-visitados tem +1 de altura
+            # Filtra esses novos estados para novos estados que não foram
+            # visitados ainda
             nvisitados = list(filter(lambda e: e not in evisitados, nestados))
-            eavisitar.extend(map(lambda e: (natual + 1, e), nvisitados))
 
             # Se não tem mais nenhum filho não-visitado (nvisitado é vazio),
             # então o estado atual não faz parte do caminho solução, logo
             # devemos tirar ele do caminho de estados (ele está no final)
             if not nvisitados:
                 ecaminho.pop()
+            else:
+                # Empilhe na pilha os estados e que ainda não foram visitados
+                # (cada um tem altura +1 em relação ao eatual)
+                eavisitar.extend(map(lambda e: (natual + 1, e), nvisitados))
 
         # Se estados a visitar está vazio, é porque não achou nenhum estado
         # meta dada essa profundidade l, então solução é nula
@@ -122,7 +125,32 @@ class Busca:
 
     @staticmethod
     def gulosa(problema: Problema) -> None:
-        pass
+        # Tratar eavisitar como fila de prioridade
+        # Ou seja, estruturar eavisitar ordenadamente
+        # de forma que o estado com menor heurística
+        # seja o primeiro elemento da lista
+        
+        eavisitar = [problema.einicial]
+        evisitados = []
+        ecaminho = []
+
+        while eavisitar:
+            eatual = eavisitar.pop(0)
+
+            evisitados.append(eatual)
+            ecaminho.append(eatual)
+
+            if problema.teste_objetivo(eatual):
+                problema.solucao = Solucao(len(evisitados), ecaminho)
+                return True
+
+            nestados = problema.operador(eatual)
+            nvisitados = list(filter(lambda e: e not in evisitados, nestados))
+
+            if not nvisitados:
+                ecaminho.pop()
+            else:
+                eavisitar.extend(nvisitados).sort(key = lambda e: e.h())
 
 
     @staticmethod
