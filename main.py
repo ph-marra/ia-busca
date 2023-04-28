@@ -1,5 +1,7 @@
 from QuebraCabeca import QuebraCabeca
 from EstadoQuebraCabeca import EstadoQuebraCabeca
+from Labirinto import Labirinto
+from EstadoLabirinto import EstadoLabirinto
 from Busca import Busca
 
 import sys
@@ -30,6 +32,22 @@ def main():
         print(problema.solucao)
     else:
         print("Não tem solução!")
+
+    einicial_gina = EstadoLabirinto([
+                    [2, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+                    [1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+                    [1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    [0, 0, 0, 1, 0, 1, 0, 1, 0, 0],
+                    [0, 0, 0, 1, 0, 1, 0, 1, 0, 0],
+                    [0, 0, 1, 1, 1, 1, 0, 1, 0, 0],
+                    [0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                    [0, 0, 1, 0, 0, 0, 0, 1, 0, 0],
+                    [0, 0, 1, 3, 1, 1, 1, 1, 0, 0],
+                    ])
+    
+    print(einicial_gina)
+
 
 
 
