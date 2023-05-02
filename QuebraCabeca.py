@@ -29,6 +29,7 @@ class QuebraCabeca(Problema):
 
         # ncoords são as tuplas (x,y) com as coordenadas de onde
         # o valor 0 (vazio) pode ser trocado
+        # 0 pra cima, 0 pra esquerda, 0 pra direita, 0 pra baixo
         ncoords = [(vi-1, vj), (vi, vj-1), (vi, vj+1), (vi+1, vj)]
         ncoords = list(filter(lambda n: n[0] >= 0 and n[0] < tam and n[1] >= 0 and n[1] < tam, ncoords))
 
