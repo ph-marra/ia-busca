@@ -66,13 +66,18 @@ class Busca:
                 eavisitar.extend(map(lambda e: (natual + 1, e), nvisitados))
 
         # Se estados a visitar está vazio, é porque não achou nenhum estado
-        # meta dada essa profundidade l, então solução é nula
+        # meta dada essa profundidade l, então solução é nula (retorna ainda
+        # quantidade de visitados para usar em Busca.bli)
+        problema.solucao = Solucao(len(evisitados), None)
         return False
 
     @staticmethod
     def bli(problema: Problema, maxAltura: int) -> bool:
+        
+        buscados = 0
         for i in range(0, maxAltura + 1):
             result = Busca.bpl(problema, i)
+            buscados += problema.solucao.nvisitados
 
             if result == True:
                 return True
