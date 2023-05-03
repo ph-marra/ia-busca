@@ -70,8 +70,14 @@ class Busca:
         return False
 
     @staticmethod
-    def bli(problema: Problema) -> bool:
-        pass
+    def bli(problema: Problema, maxAltura: int) -> bool:
+        for i in range(0, maxAltura + 1):
+            result = Busca.bpl(problema, i)
+
+            if result == True:
+                return True
+            
+        return False
 
     @staticmethod
     def blarg(problema: Problema) -> bool:
@@ -181,5 +187,9 @@ class Busca:
 
     @staticmethod
     def astar(problema: Problema) -> None:
+        pass
+
+    @staticmethod
+    def se(problema: Problema) -> None:
         pass
 
