@@ -178,7 +178,8 @@ class Busca:
             if not nvisitados:
                 ecaminho.pop()
             else:
-                eavisitar.extend(nvisitados).sort(key = lambda e: e.h())
+                nvisitados.sort(key = lambda e: e.h())
+                eavisitar.extend(nvisitados)
         
         # Se estados a visitar está vazio, é porque não achou nenhum estado
         # meta dada essa profundidade l, então solução é nula
