@@ -80,8 +80,10 @@ class Busca:
             buscados += problema.solucao.nvisitados
 
             if result == True:
+                problema.solucao = Solucao(buscados, problema.solucao.cmeta)
                 return True
-            
+
+        problema.solucao = Solucao(buscados, None)    
         return False
 
     @staticmethod
