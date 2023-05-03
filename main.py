@@ -29,7 +29,7 @@ def main():
     problema = QuebraCabeca(einicial, emeta)
 
     print('Busca Largura')
-    if Busca.bli(problema):
+    if Busca.blarg(problema):
         print(problema.solucao)
     else:
         print("Não tem solução!")
