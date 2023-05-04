@@ -203,7 +203,40 @@ class Busca:
     def astar(problema: Problema) -> None:
         pass
 
-    @staticmethod
     def se(problema: Problema) -> None:
         pass
+    
+    @staticmethod
+    def hill_climbing(problema: Problema, minimization = True) -> None:
+        
+        eatual = problema.einicial
+        best_successor = eatual
+
+        count = 0
+
+        while True and count < 5:
+            count += 1
+            eavisitar = problema.operador(eatual)
+
+            for est in eavisitar:
+                if minimization == True:
+                    if est.h(problema.emeta) < best_successor.h(problema.emeta):
+                        best_successor = est
+                        broke_condition = best_successor.h(problema.emeta) < eatual.h(problema.emeta)
+                else:
+                    if est.h(problema.emeta) > best_successor.h(problema.emeta):
+                        best_successor = est
+                        broke_condition = best_successor.h(problema.emeta) > eatual.h(problema.emeta)
+            print(eatual)
+            print(eatual.h(problema.emeta))
+            print(best_successor)
+            print(best_successor.h(problema.emeta))
+            print(broke_condition)
+
+            if broke_condition:
+                eatual = best_successor
+            else:
+                return False
+        
+        problema.solucao = Solucao(count, [eatual])
 
