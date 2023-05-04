@@ -144,31 +144,41 @@ class Busca:
         # Tratar eavisitar como fila de prioridade
         # Ou seja, estruturar eavisitar ordenadamente
         # de forma que o estado com menor heurística
-        # seja o primeiro elemento da lista
-        eavisitar = [problema.einicial]
+        # seja o primeiro elemento da lista e seu pai
+        eavisitar = [(problema.einicial, None)]
 
-        # Guarda os estados visitados na busca
+        # Guarda as duplas dos estados visitados na busca
         evisitados = []
 
-        # Guarda o caminho da solução, se encontrada
-        ecaminho = []
-
-        # Enquanto tiver estados na fila de estados a visitar
+        # Enquanto tiver estados na fila de duplas estados a visitar
         while eavisitar:
 
-            # Desenfila o próximo estado a buscar
-            eatual = eavisitar.pop(0)
+            # Desenfila a próxima dupla de estado a buscar
+            datual = eavisitar.pop(0)
+            eatual, epai = datual
 
-            # Marca atual como visitado
-            # Adiciona atual no fim do possível caminho da solução
-            evisitados.append(eatual)
-            ecaminho.append(eatual)
+            # Marca a dupla atual como visitada
+            # Adiciona datual no fim do possível caminho da solução
+            evisitados.append(datual)
 
-            # Se chegamos em um estado meta, paramos a busca,
-            # assim, eatual é o estado meta, dessa forma,
-            # retornamos que a busca foi sucedida (True)
             if problema.teste_objetivo(eatual):
-                problema.solucao = Solucao(len(evisitados), ecaminho)
+                ecaminho = []
+                n = len(evisitados)
+
+                while epai is not None:
+                    for i in range(0, n):
+                        if evisitados[i][0] == epai:
+                            ipai = i
+                            break
+                    
+                    ecaminho.append(eatual)
+                    datual = evisitados[ipai]
+                    eatual, epai = datual
+
+                ecaminho.append(eatual)
+
+                problema.solucao = Solucao(n, ecaminho[::-1])
+
                 return True
 
             # Caso contrário, operamos sob o estado atual para achar
@@ -177,16 +187,12 @@ class Busca:
 
             # Enfileire na fila de prioridade os estados e que ainda não foram visitados
             # Todos esses novos não-visitados tem +1 de altura
-            nvisitados = list(filter(lambda e: e not in evisitados, nestados))
+            aux = list(map(lambda de: de[0], evisitados))
+            nvisitados = list(filter(lambda e: e not in aux, nestados))
+            nvisitados = list(map(lambda e: (e, eatual), nvisitados))
 
-            # Se não tem mais nenhum filho não-visitado (nvisitado é vazio),
-            # então o estado atual não faz parte do caminho solução, logo
-            # devemos tirar ele do caminho de estados (ele está no final)
-            if not nvisitados:
-                ecaminho.pop()
-            else:
-                nvisitados.sort(key = lambda e: e.h(problema.emeta))
-                eavisitar.extend(nvisitados)
+            eavisitar.extend(nvisitados)
+            eavisitar.sort(key = lambda de: de[0].h(problema.emeta))
         
         # Se estados a visitar está vazio, é porque não achou nenhum estado
         # meta dada essa profundidade l, então solução é nula
