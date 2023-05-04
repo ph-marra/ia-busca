@@ -13,7 +13,7 @@ class EstadoQuebraCabeca(Estado):
         # for igual ao da meta a soma é incrementada
         for i in range(0, n):
             for j in range(0, n):
-                if estado.dados[i][j] == meta.dados[i][j]:
+                if estado.dados[i][j] != meta.dados[i][j]:
                     soma += 1
 
         return soma
