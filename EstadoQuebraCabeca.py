@@ -2,11 +2,15 @@ from Estado import Estado
 
 class EstadoQuebraCabeca(Estado):
 
+    # heuristica 01 consiste em contar quantas peças do estado atual
+    # estão posicionadas corretamente comparado às posições do estado meta
     @staticmethod
     def h1(estado, meta) -> int:
         soma = 0
         n = len(estado.dados)
 
+        # para cada elemento do estado atual, se aposição dele 
+        # for igual ao da meta a soma é incrementada
         for i in range(0, n):
             for j in range(0, n):
                 if estado.dados[i][j] == meta.dados[i][j]:
@@ -14,12 +18,16 @@ class EstadoQuebraCabeca(Estado):
 
         return soma
 
-
+    # heuristica 02 consiste em contar, para cada peça do estado atual, quantos
+    # movimentos faltam para chegar ao estado meta
     @staticmethod
     def h2(estado, meta) -> int:
         soma = 0
         n = len(estado.dados)
-        
+
+        # para cada elemento do estado atual, verifica a posição dele,
+        # conta-se quantos passos ele terá que fazer até o estado meta e 
+        # é devolvida a soma de todos os passos necessários para cada elemento
         for i in range(0, n):
             for j in range(0, n):
 
