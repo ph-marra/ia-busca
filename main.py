@@ -31,17 +31,17 @@ def main():
     # else:
     #     print("Não tem solução!")
 
-    einicial = EstadoQuebraCabeca([[2, 8, 3], [1, 6, 4], [7, 0, 5]])
-    #einicial = EstadoQuebraCabeca([[1, 2, 3], [8, 0, 4], [7, 6, 5]])
-    emeta = EstadoQuebraCabeca([[1, 2, 3], [8, 0, 4], [7, 6, 5]])
+    # einicial = EstadoQuebraCabeca([[2, 8, 3], [1, 6, 4], [7, 0, 5]])
+    # #einicial = EstadoQuebraCabeca([[1, 2, 3], [8, 0, 4], [7, 6, 5]])
+    # emeta = EstadoQuebraCabeca([[1, 2, 3], [8, 0, 4], [7, 6, 5]])
 
-    problema = QuebraCabeca(einicial, emeta)
+    # problema = QuebraCabeca(einicial, emeta)
 
-    print('Busca Gulosa')
-    if Busca.gulosa(problema):
-        print(problema.solucao)
-    else:
-        print("Não tem solução!")
+    # print('Busca Gulosa')
+    # if Busca.gulosa(problema):
+    #     print(problema.solucao)
+    # else:
+    #     print("Não tem solução!")
 
     einicial = EstadoQuebraCabeca([[2, 8, 3], [1, 6, 4], [7, 0, 5]])
     emeta = EstadoQuebraCabeca([[1, 2, 3], [8, 0, 4], [7, 6, 5]])

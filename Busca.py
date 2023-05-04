@@ -210,13 +210,16 @@ class Busca:
     def hill_climbing(problema: Problema, minimization = True) -> None:
         
         eatual = problema.einicial
-        best_successor = eatual
-
         count = 0
 
-        while True and count < 5:
+        while True:
             count += 1
             eavisitar = problema.operador(eatual)
+            
+            best_successor = eavisitar[0]
+            broke_condition = True
+
+            eavisitar = eavisitar[1:]
 
             for est in eavisitar:
                 if minimization == True:
@@ -227,16 +230,16 @@ class Busca:
                     if est.h(problema.emeta) > best_successor.h(problema.emeta):
                         best_successor = est
                         broke_condition = best_successor.h(problema.emeta) > eatual.h(problema.emeta)
-            print(eatual)
-            print(eatual.h(problema.emeta))
-            print(best_successor)
-            print(best_successor.h(problema.emeta))
-            print(broke_condition)
+            # print(eatual)
+            # print(eatual.h(problema.emeta))
+            # print(broke_condition)
 
-            if broke_condition:
+            if broke_condition and best_successor.h(problema.emeta) != 0:
                 eatual = best_successor
             else:
-                return False
-        
-        problema.solucao = Solucao(count, [eatual])
+                break
+                
+                
+        problema.solucao = Solucao(count, [best_successor])
+        return True if best_successor.h(problema.emeta) == 0 else False
 
