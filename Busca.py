@@ -71,6 +71,7 @@ class Busca:
         problema.solucao = Solucao(len(evisitados), None)
         return False
 
+
     @staticmethod
     def bli(problema: Problema, maxAltura: int) -> bool:
         
@@ -85,6 +86,7 @@ class Busca:
 
         problema.solucao = Solucao(buscados, None)    
         return False
+
 
     @staticmethod
     def blarg(problema: Problema) -> bool:
@@ -198,9 +200,11 @@ class Busca:
         # meta dada essa profundidade l, então solução é nula
         return False
     
+
     @staticmethod
     def astar(problema: Problema) -> None:
         pass
+
 
     @staticmethod
     def hill_climbing(problema: Problema, minimization = True) -> None:
@@ -230,6 +234,7 @@ class Busca:
         problema.solucao = solucao
         return achou
     
+
     @staticmethod
     def hill_climbing_mov_lat(problema: Problema, minimization = True) -> None:
         
@@ -280,10 +285,6 @@ class Busca:
 
 
     @staticmethod
-    def astar(problema: Problema) -> None:
-        pass
-
-    @staticmethod
     def hill_climbing_huryel(problema: Problema, minimization = True) -> None:
         
         eatual = problema.einicial
@@ -320,3 +321,7 @@ class Busca:
         problema.solucao = Solucao(count, [best_successor])
         return True if best_successor.h(problema.emeta) == 0 else False
 
+
+    @staticmethod
+    def cristalizada(problema: Problema):
+        pass
