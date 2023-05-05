@@ -45,14 +45,23 @@ def main():
 
     einicial = EstadoQuebraCabeca([[2, 8, 3], [1, 6, 4], [7, 0, 5]])
     emeta = EstadoQuebraCabeca([[1, 2, 3], [8, 0, 4], [7, 6, 5]])
-
     problema = QuebraCabeca(einicial, emeta)
 
     print('Busca Subida de Encosta')
     if Busca.hill_climbing(problema):
         print(problema.solucao)
     else:
-        print("Não tem solução!")
+        print(str(problema.solucao.nvisitados) + " nó(s) visitado(s), mas não tem solução!")
+        print("\nEstado de parada:")
+        print(problema.solucao.cmeta[0])
+
+    print('Busca Subida de Encosta - Movimentos Laterais')
+    if Busca.hill_climbing_mov_lat(problema):
+        print(problema.solucao)
+    else:
+        print(str(problema.solucao.nvisitados) + " nó(s) visitado(s), mas não tem solução!")
+        print("\nEstado de parada:")
+        print(problema.solucao.cmeta[0])
 
 
     # einicial_gina = EstadoLabirinto([

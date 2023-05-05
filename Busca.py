@@ -197,17 +197,94 @@ class Busca:
         # Se estados a visitar está vazio, é porque não achou nenhum estado
         # meta dada essa profundidade l, então solução é nula
         return False
+    
+    @staticmethod
+    def astar(problema: Problema) -> None:
+        pass
+
+    @staticmethod
+    def hill_climbing(problema: Problema, minimization = True) -> None:
+        
+        corrente = problema.einicial
+        achou = False
+        caminho = []
+        
+        caminho.append(corrente)
+
+        while True:
+            if problema.teste_objetivo(corrente):
+                solucao = Solucao(len(caminho), caminho)
+                achou = True
+                break
+
+            suc = corrente.sucessor_hill_climbing(problema, minimization)
+
+            if suc is None:
+                solucao = Solucao(len(caminho), [corrente])
+                achou = False
+                break
+
+            corrente = suc
+            caminho.append(corrente)
+
+        problema.solucao = solucao
+        return achou
+    
+    @staticmethod
+    def hill_climbing_mov_lat(problema: Problema, minimization = True) -> None:
+        
+        problema.einicial.gera_aleatorio()
+        corrente = problema.einicial
+        achou = False
+        mov_lat = False
+        visitados = []
+        caminho = []
+        
+        caminho.append(corrente)
+
+        while True:
+            if problema.teste_objetivo(corrente):
+                solucao = Solucao(len(caminho), caminho)
+                achou = True
+                break
+
+            suc = corrente.sucessor_hill_climbing(problema, minimization)
+
+            if suc is None:
+                if mov_lat == True:
+                    vizinhos = problema.operador(corrente)
+                    nvisitados = list(filter(lambda e: e not in visitados, vizinhos))
+
+                    if len(nvisitados) == 0:
+                        problema.einicial.gera_aleatorio()
+                        corrente = problema.einicial
+                        caminho.clear()
+                        visitados.clear()
+                        mov_lat = True
+                    else:
+                        corrente = nvisitados[0]
+                        mov_lat = False
+                else:
+                    problema.einicial.gera_aleatorio()
+                    corrente = problema.einicial
+                    caminho.clear()
+                    visitados.clear()
+                    mov_lat = True
+            else:
+                corrente = suc
+            
+            caminho.append(corrente)
+
+        problema.solucao = solucao
+        return achou
 
 
     @staticmethod
     def astar(problema: Problema) -> None:
         pass
 
-    def se(problema: Problema) -> None:
-        pass
-    
     @staticmethod
-    def hill_climbing(problema: Problema, minimization = True) -> None:
+    def hill_climbing_huryel(problema: Problema, minimization = True) -> None:
         
         eatual = problema.einicial
         count = 0

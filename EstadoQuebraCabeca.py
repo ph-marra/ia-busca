@@ -1,3 +1,4 @@
+import random
 from Estado import Estado
 
 class EstadoQuebraCabeca(Estado):
@@ -62,6 +63,20 @@ class EstadoQuebraCabeca(Estado):
     
     def get_dados(self):
         return self.dados
+    
+    def gera_aleatorio(self):
+        n = len(self.dados)
+        novos_dados = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        options = [i for i in range(0, n * n)]
+
+        for i in range(0, n):
+            for j in range(0, n):
+                num = random.choice(options)
+                novos_dados[i][j]  = num
+                options.remove(num)
+
+
+        self.dados = novos_dados
 
     def __eq__(self, other):
         n = len(self.dados)

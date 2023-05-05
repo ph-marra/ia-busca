@@ -17,7 +17,7 @@ class Solucao:
         
         for e in self.cmeta:
             s += '\n******\n'
-            s += str(e.dados) + ' h =' + str(e.h(self.cmeta[-1]))
+            s += str(e.dados) + ' h = ' + str(e.h(self.cmeta[-1]))
             s += '\n******\n'
 
         return s
