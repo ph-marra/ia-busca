@@ -1,3 +1,6 @@
+import math
+import random
+
 from Problema import Problema
 from Solucao import Solucao
 from Estado import Estado
@@ -323,5 +326,36 @@ class Busca:
 
 
     @staticmethod
-    def cristalizada(problema: Problema):
-        pass
+    def cristalizada(problema: Problema, minimization = True) -> None:
+        initial_temperature = 100
+        max_iterations = 10000000000000
+        cooling_factor = 0.95
+        objective_function = problema.einicial.h
+        generate_successor = problema.einicial.h
+
+        current_state = problema.einicial
+        current_temperature = initial_temperature
+
+        i = 0
+        is_great_state = current_state.h(problema.emeta) == problema.emeta.h(problema.emeta)
+
+        while i < max_iterations and not is_great_state:
+            print(current_state.h(problema.emeta))
+            successor = random.choice(problema.operador(current_state))
+
+            delta = successor.h(problema.emeta) - current_state.h(problema.emeta) if minimization == True else current_state.h(problema.emeta) - successor.h(problema.emeta)
+            if delta < 0: # dúvida
+                current_state = successor
+            else:
+                probability_of_acceptance = math.exp(delta / current_temperature)
+                random_number = random.random()
+                if random_number <= probability_of_acceptance:
+                    current_state = successor
+            current_temperature = cooling_factor * current_temperature
+
+            i += 1
+            is_great_state = current_state.h(problema.emeta) == problema.emeta.h(problema.emeta)
+
+        
+        problema.solucao = Solucao(i, [current_state])
+        return True if is_great_state else False
