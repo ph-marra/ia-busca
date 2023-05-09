@@ -139,7 +139,7 @@ def main():
                         pass
 
                 os.system(CLEAR)
-                buscas[busca-1](problema, minimization)
+                buscas[busca-1](problema, minimization=minimization)
                 print(problema.solucao)
 
             else:
