@@ -127,7 +127,7 @@ def main():
 
             elif busca == 5 or busca == 6 or busca == 7:
                 minimization = None
-                while minimization != None:
+                while minimization != True and minimization != False:
                     os.system(CLEAR)
                     try:
                         inp = int(input("1. Minimização.\n2. Maximização.\nEscolha uma opção: "))

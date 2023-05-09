@@ -325,37 +325,83 @@ class Busca:
         return True if best_successor.h(problema.emeta) == 0 else False
 
 
-    @staticmethod
-    def cristalizada(problema: Problema, minimization = True) -> None:
-        initial_temperature = 100
-        max_iterations = 10000000000000
-        cooling_factor = 0.95
-        objective_function = problema.einicial.h
-        generate_successor = problema.einicial.h
+    # @staticmethod
+    # def cristalizada(problema: Problema, minimization = True) -> None:
+    #     initial_temperature = 100
+    #     max_iterations = 1000
+    #     cooling_factor = 0.98
 
-        current_state = problema.einicial
-        current_temperature = initial_temperature
+    #     current_state = problema.einicial
+    #     current_temperature = initial_temperature
 
-        i = 0
-        is_great_state = current_state.h(problema.emeta) == problema.emeta.h(problema.emeta)
+    #     i = 0
+    #     is_great_state = current_state.h(problema.emeta) == problema.emeta.h(problema.emeta)
 
-        while i < max_iterations and not is_great_state:
-            print(current_state.h(problema.emeta))
-            successor = random.choice(problema.operador(current_state))
+    #     while i < max_iterations and not is_great_state:
+    #         successor = random.choice(problema.operador(current_state))
 
-            delta = successor.h(problema.emeta) - current_state.h(problema.emeta) if minimization == True else current_state.h(problema.emeta) - successor.h(problema.emeta)
-            if delta < 0: # dúvida
-                current_state = successor
-            else:
-                probability_of_acceptance = math.exp(delta / current_temperature)
-                random_number = random.random()
-                if random_number <= probability_of_acceptance:
-                    current_state = successor
-            current_temperature = cooling_factor * current_temperature
+    #         delta = successor.h(problema.emeta) - current_state.h(problema.emeta)
+    #         if (delta < 0 and minimization == True) or (delta > 0 and minimization == False):
+    #             current_state = successor
+    #         else:
+    #             probability_of_acceptance = math.exp(delta / current_temperature)
+    #             random_number = random.random()
+    #             if random_number <= probability_of_acceptance:
+    #                 current_state = successor
+    #         current_temperature = cooling_factor * current_temperature
 
-            i += 1
-            is_great_state = current_state.h(problema.emeta) == problema.emeta.h(problema.emeta)
+    #         i += 1
+    #         is_great_state = current_state.h(problema.emeta) == problema.emeta.h(problema.emeta)
 
         
-        problema.solucao = Solucao(i, [current_state])
-        return True if is_great_state else False
+    #     problema.solucao = Solucao(i, [current_state])
+    #     return True if is_great_state else False
+
+    @staticmethod
+    def cristalizada(problema: Problema, minimization = True) -> None:
+        # Define a temperatura inicial, a temperatura mínima e o fator de resfriamento
+        temperatura = 100.0
+        temperatura_minima = 1e-8
+        fator_resfriamento = 0.95
+
+        # Define o estado inicial aleatório
+        estado_atual = problema.einicial
+
+        # Define a melhor solução encontrada até agora
+        melhor_estado = estado_atual
+        melhor_avaliacao = melhor_estado.h(problema.emeta)
+
+        # Executa a busca de têmpera simulada
+        i = 0
+        is_great_state = estado_atual.h(problema.emeta) == problema.emeta.h(problema.emeta)
+        while temperatura > temperatura_minima and not is_great_state:
+            # Gera um novo estado vizinho
+            novo_estado = random.choice(problema.operador(estado_atual)) 
+            
+            # Avalia a solução atual e a nova solução vizinha
+            avaliacao_atual = estado_atual.h(problema.emeta)
+            avaliacao_vizinha = novo_estado.h(problema.emeta)
+            
+            # Calcula a probabilidade de aceitar a nova solução vizinha
+            delta_avaliacao = avaliacao_vizinha - avaliacao_atual
+            probabilidade = math.exp(-delta_avaliacao / temperatura)
+            probabilidade = round(probabilidade, 15)
+            print(probabilidade)
+            
+            # Aceita a nova solução vizinha com probabilidade p ou com probabilidade 1-p se a nova solução for melhor
+            if probabilidade > random.uniform(0, 1) or delta_avaliacao > 0:
+                estado_atual = novo_estado
+                avaliacao_atual = avaliacao_vizinha
+            
+            # Atualiza a melhor solução encontrada até agora
+            if avaliacao_atual < melhor_avaliacao:
+                melhor_estado = estado_atual
+                melhor_avaliacao = avaliacao_atual
+            
+            # Resfria a temperatura
+            temperatura *= fator_resfriamento
+            is_great_state = melhor_estado.h(problema.emeta) == problema.emeta.h(problema.emeta)
+
+        
+        problema.solucao = Solucao(i, [melhor_estado])
+        return True if is_great_state else False 
