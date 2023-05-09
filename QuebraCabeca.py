@@ -6,7 +6,7 @@ class QuebraCabeca(Problema):
 
 
     def __init__(self, einicial: EstadoQuebraCabeca, emeta: EstadoQuebraCabeca) -> None:       
-        super().__init__(einicial, emeta)
+        super().__init__(einicial, None, emeta)
 
 
     def teste_objetivo(self, estado: EstadoQuebraCabeca) -> bool:
@@ -44,3 +44,6 @@ class QuebraCabeca(Problema):
             nestados.append(EstadoQuebraCabeca(nc))
 
         return nestados
+    
+    def relacao(self, estado1: EstadoQuebraCabeca, estado2: EstadoQuebraCabeca) -> int:
+        return 1

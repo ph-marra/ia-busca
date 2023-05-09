@@ -87,7 +87,7 @@ def main():
         if busca == 8: return
         else:
             os.system(CLEAR)
-            buscas = [Busca.bli, Busca.bpl, Busca.gulosa, Busca.astar, Busca.hill_climbing, Busca.hill_climbing_mov_lat, Busca.cristalizada]
+            buscas = [Busca.bli, Busca.bpl, Busca.gulosa, Busca.astar, Busca.hill_climbing, Busca.hill_climbing_mov_lat, Busca.tempera_simulada]
 
             if busca == 1:
                 l = -1

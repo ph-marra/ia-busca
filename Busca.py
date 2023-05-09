@@ -38,7 +38,7 @@ class Busca:
             # assim, eatual é o estado meta, dessa forma, 
             # retornamos que a busca foi sucedida (True)
             if problema.teste_objetivo(eatual):
-                problema.solucao = Solucao(len(evisitados), ecaminho)
+                problema.solucao = Solucao(len(evisitados), ecaminho, problema.emeta)
                 return True
 
             # Se a altura do estado atual é l, podamos essa busca,
@@ -71,7 +71,7 @@ class Busca:
         # Se estados a visitar está vazio, é porque não achou nenhum estado
         # meta dada essa profundidade l, então solução é nula (retorna ainda
         # quantidade de visitados para usar em Busca.bli)
-        problema.solucao = Solucao(len(evisitados), None)
+        problema.solucao = Solucao(len(evisitados), None, problema.emeta)
         return False
 
 
@@ -84,10 +84,10 @@ class Busca:
             buscados += problema.solucao.nvisitados
 
             if result == True:
-                problema.solucao = Solucao(buscados, problema.solucao.cmeta)
+                problema.solucao = Solucao(buscados, problema.solucao.cmeta, problema.emeta)
                 return True
 
-        problema.solucao = Solucao(buscados, None)    
+        problema.solucao = Solucao(buscados, None, problema.emeta)    
         return False
 
 
@@ -120,7 +120,7 @@ class Busca:
             # assim, eatual é o estado meta, dessa forma,
             # retornamos que a busca foi sucedida (True)
             if problema.teste_objetivo(eatual):
-                problema.solucao = Solucao(len(evisitados), ecaminho)
+                problema.solucao = Solucao(len(evisitados), ecaminho, problema.emeta)
                 return True
 
 
@@ -145,7 +145,7 @@ class Busca:
 
 
     @staticmethod
-    def gulosa(problema: Problema) -> None:
+    def gulosa(problema: Problema) -> bool:
         # Tratar eavisitar como fila de prioridade
         # Ou seja, estruturar eavisitar ordenadamente
         # de forma que o estado com menor heurística
@@ -182,7 +182,10 @@ class Busca:
 
                 ecaminho.append(eatual)
 
-                problema.solucao = Solucao(n, ecaminho[::-1])
+                problema.solucao = Solucao(n, ecaminho[::-1], problema.emeta)
+
+                for ev in evisitados:
+                    print(ev[0], ev[0].h(problema.emeta))
 
                 return True
 
@@ -205,8 +208,71 @@ class Busca:
     
 
     @staticmethod
-    def astar(problema: Problema) -> None:
-        pass
+    def astar(problema: Problema) -> bool:
+        # Tratar eavisitar como fila de prioridade
+        # Ou seja, estruturar eavisitar ordenadamente
+        # de forma que o estado com menor heurística
+        # seja o primeiro elemento da lista e seu pai
+        eavisitar = [(problema.einicial, None)]
+        problema.einicial.g = 0
+
+        # Guarda as duplas dos estados visitados na busca
+        evisitados = []
+
+        # Enquanto tiver estados na fila de duplas estados a visitar
+        while eavisitar:
+
+            # Desenfila a próxima dupla de estado a buscar
+            datual = eavisitar.pop(0)
+            eatual, epai = datual
+
+            # Marca a dupla atual como visitada
+            # Adiciona datual no fim do possível caminho da solução
+            evisitados.append(datual)
+
+            if problema.teste_objetivo(eatual):
+                ecaminho = []
+                n = len(evisitados)
+
+                while epai is not None:
+                    for i in range(0, n):
+                        if evisitados[i][0] == epai:
+                            ipai = i
+                            break
+                    
+                    ecaminho.append(eatual)
+                    datual = evisitados[ipai]
+                    eatual, epai = datual
+
+                ecaminho.append(eatual)
+
+                problema.solucao = Solucao(n, ecaminho[::-1], problema.emeta)
+                
+                for ev in evisitados:
+                    print(ev[0], ev[0].h(problema.emeta))
+
+                return True
+
+            # Caso contrário, operamos sob o estado atual para achar
+            # novos estados de busca possíveis estados meta
+            nestados = problema.operador(eatual)
+
+            # Enfileire na fila de prioridade os estados e que ainda não foram visitados
+            # Todos esses novos não-visitados tem +1 de altura
+            aux = list(map(lambda de: de[0], evisitados))
+            nvisitados = list(filter(lambda e: e not in aux, nestados))
+
+            for nv in nvisitados:
+                nv.g = problema.relacao(nv, eatual) + eatual.g
+
+            nvisitados = list(map(lambda e: (e, eatual), nvisitados))
+
+            eavisitar.extend(nvisitados)
+            eavisitar.sort(key = lambda de: de[0].g + de[0].h(problema.emeta))
+        
+        # Se estados a visitar está vazio, é porque não achou nenhum estado
+        # meta dada essa profundidade l, então solução é nula
+        return False
 
 
     @staticmethod
@@ -220,14 +286,14 @@ class Busca:
 
         while True:
             if problema.teste_objetivo(corrente):
-                solucao = Solucao(len(caminho), caminho)
+                solucao = Solucao(len(caminho), caminho, problema.emeta)
                 achou = True
                 break
 
             suc = corrente.sucessor_hill_climbing(problema, minimization)
 
             if suc is None:
-                solucao = Solucao(len(caminho), [corrente])
+                solucao = Solucao(len(caminho), [corrente], problema.emeta)
                 achou = False
                 break
 
@@ -252,7 +318,7 @@ class Busca:
 
         while True:
             if problema.teste_objetivo(corrente):
-                solucao = Solucao(len(caminho), caminho)
+                solucao = Solucao(len(caminho), caminho, problema.emeta)
                 achou = True
                 break
 
@@ -288,45 +354,7 @@ class Busca:
 
 
     @staticmethod
-    def hill_climbing_huryel(problema: Problema, minimization = True) -> None:
-        
-        eatual = problema.einicial
-        count = 0
-
-        while True:
-            count += 1
-            eavisitar = problema.operador(eatual)
-            
-            best_successor = eavisitar[0]
-            broke_condition = True
-
-            eavisitar = eavisitar[1:]
-
-            for est in eavisitar:
-                if minimization == True:
-                    if est.h(problema.emeta) < best_successor.h(problema.emeta):
-                        best_successor = est
-                        broke_condition = best_successor.h(problema.emeta) < eatual.h(problema.emeta)
-                else:
-                    if est.h(problema.emeta) > best_successor.h(problema.emeta):
-                        best_successor = est
-                        broke_condition = best_successor.h(problema.emeta) > eatual.h(problema.emeta)
-            # print(eatual)
-            # print(eatual.h(problema.emeta))
-            # print(broke_condition)
-
-            if broke_condition and best_successor.h(problema.emeta) != 0:
-                eatual = best_successor
-            else:
-                break
-                
-                
-        problema.solucao = Solucao(count, [best_successor])
-        return True if best_successor.h(problema.emeta) == 0 else False
-
-
-    @staticmethod
-    def cristalizada(problema: Problema, l = 10**6, minimization = True) -> None:
+    def tempera_simulada(problema: Problema, l = 10**6, minimization = True) -> None:
         ecorrente = problema.einicial
         count = 1
 
@@ -337,7 +365,7 @@ class Busca:
 
             objetivou = problema.teste_objetivo(ecorrente)
             if T == 0 or objetivou:
-                problema.solucao = Solucao(count, [ecorrente])
+                problema.solucao = Solucao(count, [ecorrente], problema.emeta)
                 return objetivou
 
             proximo = random.choice(problema.operador(ecorrente))
@@ -350,5 +378,5 @@ class Busca:
                 probabilidade = math.exp(dE / T)
                 ecorrente = random.choices([ecorrente, proximo], weights=[1-probabilidade, probabilidade])[0]
 
-        problema.solucao = Solucao(count, [ecorrente])
+        problema.solucao = Solucao(count, [ecorrente], problema.emeta)
         return False
