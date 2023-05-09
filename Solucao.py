@@ -16,10 +16,17 @@ class Solucao:
 
         s += "\n-------------------------------\n"
         
-        for e in self.cmeta:
-            s += '\n******\n'
-            s += str(e.dados) + ' h = ' + str(e.h(self.emeta))
-            s += '\n******\n'
+        for i, e in enumerate(self.cmeta):
+            s += '\n-------------------------------\n\n'
+
+            s += f"{i+1}-ésimo estado (com H = {str(e.h(self.emeta))})\n\n"
+            for j in range(0, len(e.dados)):
+                for k in range(0, len(e.dados)):
+                    s += str(e.dados[j][k])
+                    s += ' '
+                s += '\n'
+
+            s += '\n-------------------------------\n'
 
         return s
 

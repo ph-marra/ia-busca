@@ -184,9 +184,6 @@ class Busca:
 
                 problema.solucao = Solucao(n, ecaminho[::-1], problema.emeta)
 
-                for ev in evisitados:
-                    print(ev[0], ev[0].h(problema.emeta))
-
                 return True
 
             # Caso contrário, operamos sob o estado atual para achar
@@ -247,9 +244,6 @@ class Busca:
                 ecaminho.append(eatual)
 
                 problema.solucao = Solucao(n, ecaminho[::-1], problema.emeta)
-                
-                for ev in evisitados:
-                    print(ev[0], ev[0].h(problema.emeta))
 
                 return True
 
