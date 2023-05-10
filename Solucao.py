@@ -20,11 +20,8 @@ class Solucao:
             s += '\n-------------------------------\n\n'
 
             s += f"{i+1}-ésimo estado (com H = {str(e.h(self.emeta))})\n\n"
-            for j in range(0, len(e.dados)):
-                for k in range(0, len(e.dados)):
-                    s += str(e.dados[j][k])
-                    s += ' '
-                s += '\n'
+            s += e.__str__()
+            s += '\n'
 
             s += '\n-------------------------------\n'
 

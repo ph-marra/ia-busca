@@ -6,13 +6,37 @@ class EstadoLabirinto(Estado):
 
     @staticmethod
     def h1(estado, meta) -> int:
-        pass
+        
+        x, y = len(estado.dados), len(estado.dados[0])
+        ip, jp = 0, 0
+        im, jm = 0, 0
+
+        for i in range(0, x):
+            for j in range(0, y):
+                if estado.dados[i][j] == 10 or estado.dados[i][j] == 20:
+                    ip, jp = i, j
+                if meta.dados[i][j] == 30:
+                    im, jm = i, j
+
+        return abs(im - ip)**2 + abs(jm - jp)**2
 
 
     @staticmethod
     def h2(estado, meta) -> int:
-        pass
-    
+
+        x, y = len(estado.dados), len(estado.dados[0])
+        ip, jp = 0, 0
+        im, jm = 0, 0
+
+        for i in range(0, x):
+            for j in range(0, y):
+                if estado.dados[i][j] == 10 or estado.dados[i][j] == 20:
+                    ip, jp = i, j
+                if meta.dados[i][j] == 30:
+                    im, jm = i, j
+
+        return abs(im - ip) + abs(jm - jp)
+
 
     def __init__(self, dados: list[object], heuristica='h1') -> None:       
         super().__init__(dados)
@@ -49,9 +73,13 @@ class EstadoLabirinto(Estado):
         if self.dados is not None:
             s += '\n\nLabirinto = \n\n'
 
-            for i in range(0, len(self.dados)):
-                for j in range(0, len(self.dados)):
-                    s += str(self.dados[i][j])
+            x, y = len(self.dados), len(self.dados[0])
+            for i in range(0, x):
+                for j in range(0, y):
+                    if self.dados[i][j] >= 10:
+                        s += 'P'
+                    else:
+                        s += str(self.dados[i][j])
                     s += ' '
                 s += '\n'
 
