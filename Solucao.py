@@ -14,16 +14,11 @@ class Solucao:
         s += 'Visitados = '
         s += str(self.nvisitados)
 
-        s += "\n-------------------------------\n"
-        
         for i, e in enumerate(self.cmeta):
-            s += '\n-------------------------------\n\n'
+            s += '\n\n----------------------------\n\n'
 
             s += f"{i+1}-ésimo estado (com H = {str(e.h(self.emeta))})\n\n"
             s += e.__str__()
-            s += '\n'
-
-            s += '\n-------------------------------\n'
 
         return s
 

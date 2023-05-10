@@ -92,16 +92,15 @@ class EstadoQuebraCabeca(Estado):
         s = ''
 
         if self.g is not None:
-            s += '-------------------------\ng = '
+            s += '----------------------------\ng = '
             s += str(self.g)
 
         if self.dados is not None:
-            s += '\n\nMatriz = \n'
+            s += '\n\nMatriz\n\n'
             for j in range(0, len(self.dados)):
                 for k in range(0, len(self.dados)):
                     s += str(self.dados[j][k])
                     s += ' '
                 s += '\n'
-            s += '\n-------------------------\n'
 
         return s

@@ -20,6 +20,17 @@ class Problema:
     
     def relacao(self, estado1: Estado, estado2: Estado) -> int:
         pass
+
+    def __str__(self):
+        s = ''
+
+        s += 'Estado Inicial\n'
+        s += self.einicial.__str__()
+
+        s += '\n\nEstado Meta\n'
+        s += self.emeta.__str__()
+
+        return s
     
 
     

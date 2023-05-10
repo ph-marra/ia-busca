@@ -67,11 +67,11 @@ class EstadoLabirinto(Estado):
         s = ''
 
         if self.g is not None:
-            s += '-------------------------\ng = '
+            s += '-----------------------------\ng = '
             s += str(self.g)
 
         if self.dados is not None:
-            s += '\n\nLabirinto = \n\n'
+            s += '\n\nLabirinto\n\n'
 
             x, y = len(self.dados), len(self.dados[0])
             for i in range(0, x):
@@ -82,7 +82,5 @@ class EstadoLabirinto(Estado):
                         s += str(self.dados[i][j])
                     s += ' '
                 s += '\n'
-
-            s += '-------------------------\n'
 
         return s

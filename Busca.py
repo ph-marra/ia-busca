@@ -270,85 +270,85 @@ class Busca:
 
 
     @staticmethod
-    def hill_climbing(problema: Problema, minimization = True) -> None:
+    def subida_encosta(problema: Problema, minimization = True) -> None:
         
-        corrente = problema.einicial
+        eatual = problema.einicial
         achou = False
         caminho = []
         
-        caminho.append(corrente)
+        caminho.append(eatual)
 
         while True:
-            if problema.teste_objetivo(corrente):
+            if problema.teste_objetivo(eatual):
                 solucao = Solucao(len(caminho), caminho, problema.emeta)
                 achou = True
                 break
 
-            suc = corrente.sucessor_hill_climbing(problema, minimization)
+            suc = eatual.sucessor_hill_climbing(problema, minimization)
 
             if suc is None:
-                solucao = Solucao(len(caminho), [corrente], problema.emeta)
+                solucao = Solucao(len(caminho), caminho, problema.emeta)
                 achou = False
                 break
 
-            corrente = suc
-            caminho.append(corrente)
+            eatual = suc
+            caminho.append(eatual)
 
         problema.solucao = solucao
         return achou
     
 
     @staticmethod
-    def hill_climbing_mov_lat(problema: Problema, minimization = True) -> None:
+    def subida_encosta_mov_lat(problema: Problema, minimization = True) -> None:
         
         problema.einicial.gera_aleatorio()
-        corrente = problema.einicial
+        eatual = problema.einicial
         achou = False
         mov_lat = False
-        visitados = []
+        evisitados = []
         caminho = []
         
-        caminho.append(corrente)
+        caminho.append(eatual)
 
         while True:
-            if problema.teste_objetivo(corrente):
+            if problema.teste_objetivo(eatual):
                 solucao = Solucao(len(caminho), caminho, problema.emeta)
                 achou = True
                 break
 
-            suc = corrente.sucessor_hill_climbing(problema, minimization)
+            suc = eatual.sucessor_hill_climbing(problema, minimization)
 
             if suc is None:
                 if mov_lat == True:
-                    vizinhos = problema.operador(corrente)
-                    nvisitados = list(filter(lambda e: e not in visitados, vizinhos))
+                    vizinhos = problema.operador(eatual)
+                    nvisitados = list(filter(lambda e: e not in evisitados, vizinhos))
 
                     if len(nvisitados) == 0:
                         problema.einicial.gera_aleatorio()
-                        corrente = problema.einicial
+                        eatual = problema.einicial
                         caminho.clear()
-                        visitados.clear()
+                        evisitados.clear()
                         mov_lat = True
                     else:
-                        corrente = nvisitados[0]
+                        eatual = nvisitados[0]
                         mov_lat = False
                 else:
                     problema.einicial.gera_aleatorio()
-                    corrente = problema.einicial
+                    eatual = problema.einicial
                     caminho.clear()
-                    visitados.clear()
+                    evisitados.clear()
                     mov_lat = True
             else:
-                corrente = suc
+                eatual = suc
             
-            caminho.append(corrente)
+            caminho.append(eatual)
 
         problema.solucao = solucao
         return achou
 
 
     @staticmethod
-    def tempera_simulada(problema: Problema, l = 10**6, minimization = True) -> None:
+    def recristalizacao_simulada(problema: Problema, l = 10**6, minimization = True) -> None:
         ecorrente = problema.einicial
         count = 1
 

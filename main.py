@@ -39,14 +39,14 @@ def main():
 
 
         disp = -1
-        while disp < 0 or disp > len(problemas) - 1:
+        while disp < 1 or disp > len(problemas):
             os.system(CLEAR)
             print("---------------------OPÇÕES------------------------")
             print("---------------------------------------------------\n")
 
             for i, problema in enumerate(problemas):
                 descricao = problema["Descricao"]
-                print(f"{i}. {descricao}.")
+                print(f"{i+1}. {descricao}.")
 
             print("\n---------------------------------------------------\n")
 
@@ -56,12 +56,12 @@ def main():
                 pass
 
         if prob == 1: 
-            einicial = EstadoQuebraCabeca(problemas[disp]["Estado-Inicial"])
-            emeta = EstadoQuebraCabeca(problemas[disp]["Estado-Meta"])
+            einicial = EstadoQuebraCabeca(problemas[disp-1]["Estado-Inicial"])
+            emeta = EstadoQuebraCabeca(problemas[disp-1]["Estado-Meta"])
             problema = QuebraCabeca(einicial, emeta)
         elif prob == 2:
-            einicial = EstadoLabirinto(problemas[disp]["Estado-Inicial"])
-            emeta = EstadoLabirinto(problemas[disp]["Estado-Meta"])
+            einicial = EstadoLabirinto(problemas[disp-1]["Estado-Inicial"])
+            emeta = EstadoLabirinto(problemas[disp-1]["Estado-Meta"])
             problema = Labirinto(einicial, emeta)
 
         busca = 0
@@ -87,7 +87,7 @@ def main():
         if busca == 8: return
         else:
             os.system(CLEAR)
-            buscas = [Busca.bli, Busca.bpl, Busca.gulosa, Busca.astar, Busca.hill_climbing, Busca.hill_climbing_mov_lat, Busca.tempera_simulada]
+            buscas = [Busca.bli, Busca.bpl, Busca.gulosa, Busca.astar, Busca.subida_encosta, Busca.subida_encosta_mov_lat, Busca.recristalizacao_simulada]
 
             if busca == 1:
                 l = -1
@@ -139,8 +139,23 @@ def main():
                         pass
 
                 os.system(CLEAR)
-                buscas[busca-1](problema, minimization=minimization)
-                print(problema.solucao)
+
+                if buscas[busca-1](problema, minimization=minimization):
+                    if busca == 5:
+                        print(f"Encontrada solução para Busca Subida de Encosta\n")
+                    elif busca == 6:
+                        print(f"Encontrada solução para Busca Subida de Encosta com Movimentos Laterais\n")
+                    else:
+                        print(f"Encontrada solução para Recristalização Simulada\n")
+                    print(problema.solucao)
+                else:
+                    if busca == 5:
+                        print(f"Subida de Encosta finalizada por encontrar máximo local")
+                        print("Caminho realizado até parada:\n\n")
+                        print(problema.solucao)
+                    else:
+                        print("Problema com a solução não encontrada:\n\n")
+                        print(problema)
 
             else:
                 os.system(CLEAR)
