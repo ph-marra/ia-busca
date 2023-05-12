@@ -1,4 +1,5 @@
 import random
+import copy
 from Estado import Estado
 
 class EstadoQuebraCabeca(Estado):
@@ -66,7 +67,8 @@ class EstadoQuebraCabeca(Estado):
     
     def gera_aleatorio(self):
         n = len(self.dados)
-        novos_dados = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        zeros = [0] * n
+        novos_dados = [copy.deepcopy(zeros) for i in range(n)]
         options = [i for i in range(0, n * n)]
 
         for i in range(0, n):

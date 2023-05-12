@@ -11,6 +11,7 @@ class QuebraCabeca(Problema):
 
     def teste_objetivo(self, estado: EstadoQuebraCabeca) -> bool:
         n = len(estado.dados)
+
         for i in range(0, n):
             for j in range(0, n):
                 if estado.dados[i][j] != self.emeta.dados[i][j]:

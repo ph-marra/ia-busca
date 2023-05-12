@@ -14,6 +14,9 @@ class Solucao:
         s += 'Visitados = '
         s += str(self.nvisitados)
 
+        s += '\nProfundidade = '
+        s += str(len(self.cmeta) - 1)
+
         for i, e in enumerate(self.cmeta):
             s += '\n\n----------------------------\n\n'
 

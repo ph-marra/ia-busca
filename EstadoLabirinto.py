@@ -1,5 +1,5 @@
-from Estado import Estado
-
+import random
+import copy
 from Estado import Estado
 
 class EstadoLabirinto(Estado):
@@ -52,6 +52,33 @@ class EstadoLabirinto(Estado):
     
     def get_dados(self):
         return self.dados
+    
+    def gera_aleatorio(self):
+        x = len(self.dados)
+        y = len(self.dados[0])
+        zeros = [0] * y
+        novos_dados = [copy.deepcopy(zeros) for i in range(x)]
+        options = [i for i in range(0, 2)]
+
+        i_pos_inicio = random.choice([i for i in range(0, x)])
+        j_pos_inicio = random.choice([i for i in range(0, y)])
+        i_pos_meta = random.choice([i for i in range(0, x)])
+        j_pos_meta = random.choice([i for i in range(0, y)])
+
+        while i_pos_meta == i_pos_inicio and j_pos_meta == j_pos_inicio:
+            i_pos_meta = random.choice([i for i in range(0, x)])
+            j_pos_meta = random.choice([i for i in range(0, y)])
+
+        novos_dados[i_pos_inicio][j_pos_inicio] = 20
+        novos_dados[i_pos_meta][j_pos_meta] = 3
+
+        for i in range(0, x):
+            for j in range(0, y):
+                if novos_dados[i][j] == 0:
+                    num = random.choice(options)
+                    novos_dados[i][j]  = num
+
+        self.dados = novos_dados
 
     def __eq__(self, other):
         n = len(self.dados)
