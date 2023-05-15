@@ -213,7 +213,7 @@ def main():
                 else:
                     print(f"Impossível achar solução para Busca por Profundidade Limitada com L = {l}")
                     print("Problema com a solução não encontrada:\n\n")
-                    print(problema.solucao)
+                    print(problema)
             elif busca == 2:
                 os.system(CLEAR)
                 if buscas[busca-1](problema, l):
