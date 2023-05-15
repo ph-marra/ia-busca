@@ -47,9 +47,6 @@ class EstadoQuebraCabeca(Estado):
     
 
     def __init__(self, dados: list[object], heuristica='h1') -> None:
-        #n = len(dados)
-        #if n != 3 or n != 4 or any(map(lambda l: len(l) != 3 or len(l) != 4, dados)):
-        #    raise Exception
         
         super().__init__(dados)
 
