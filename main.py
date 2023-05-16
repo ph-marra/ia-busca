@@ -73,7 +73,7 @@ def testes(tipo_problema: int, problemas, buscas, busca_escolhida: int, l: int, 
         elif busca_escolhida == 3 or busca_escolhida == 4:
             encontrou = buscas[busca_escolhida-1](problema)
         else:
-            encontrou = buscas[busca_escolhida-1](p, minimization=minimization)
+            encontrou = buscas[busca_escolhida-1](problema, minimization=minimization)
 
         stop = process_time()
 
