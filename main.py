@@ -119,7 +119,7 @@ def main():
             problemas = json.load(f)["Quebra-Cabecas"]
         elif prob == 2:
             problemas = json.load(f)["Labirintos"]
-        buscas = [Busca.bli, Busca.bpl, Busca.gulosa, Busca.astar, Busca.subida_encosta, Busca.subida_encosta_mov_lat, Busca.recristalizacao_simulada]
+        buscas = [Busca.bpl, Busca.bli, Busca.gulosa, Busca.astar, Busca.subida_encosta, Busca.subida_encosta_mov_lat, Busca.recristalizacao_simulada]
         busca = 0
         l = -1
         minimization = None

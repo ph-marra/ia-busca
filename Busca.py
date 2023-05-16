@@ -22,7 +22,7 @@ class Busca:
             ecaminho.append(eatual)
 
             if problema.teste_objetivo(eatual):
-                problema.solucao = Solucao(len(evisitados), ecaminho, problema.emeta)
+                problema.solucao = Solucao(len(evisitados), ecaminho, natual, problema.emeta)
                 return True
 
             if natual == l:
@@ -39,7 +39,7 @@ class Busca:
             else:
                 eavisitar.extend(map(lambda e: (natual + 1, e), nvisitados))
 
-        problema.solucao = Solucao(len(evisitados), None, problema.emeta)
+        problema.solucao = Solucao(len(evisitados), None, natual, problema.emeta)
         return False
 
 
@@ -52,155 +52,123 @@ class Busca:
             buscados += problema.solucao.nvisitados
 
             if result == True:
-                problema.solucao = Solucao(buscados, problema.solucao.cmeta, problema.emeta)
+                problema.solucao = Solucao(buscados, problema.solucao.cmeta, problema.solucao.profmeta, problema.emeta)
                 return True
 
-        problema.solucao = Solucao(buscados, None, problema.emeta)    
+        problema.solucao = Solucao(buscados, None, problema.solucao.profmeta, problema.emeta)    
         return False
-
-
-    @staticmethod
-    def blarg(problema: Problema) -> bool:
-        eavisitar = [problema.einicial]
-        evisitados = []
-        ecaminho = []
-
-        while eavisitar:
-
-            eatual = eavisitar.pop(0)
-
-            evisitados.append(eatual)
-            ecaminho.append(eatual)
-
-            if problema.teste_objetivo(eatual):
-                problema.solucao = Solucao(len(evisitados), ecaminho, problema.emeta)
-                return True
-
-
-            nestados = problema.operador(eatual)
-
-            nvisitados = list(filter(lambda e: e not in evisitados, nestados))
-            eavisitar.extend(nvisitados)
-
-            if not nvisitados:
-                ecaminho.pop()
-
-        return False
-
 
     @staticmethod
     def gulosa(problema: Problema) -> bool:
-        eavisitar = [(problema.einicial, None)]
-
+        eavisitar = [(0, problema.einicial, None)]
         evisitados = []
 
         while eavisitar:
-
             datual = eavisitar.pop(0)
-            eatual, epai = datual
-
+            natual, eatual, epai = datual
+            
             evisitados.append(datual)
 
             if problema.teste_objetivo(eatual):
                 ecaminho = []
                 n = len(evisitados)
+                prof = natual
 
                 while epai is not None:
                     for i in range(0, n):
-                        if evisitados[i][0] == epai:
+                        if evisitados[i][1] == epai:
                             ipai = i
                             break
                     
                     ecaminho.append(eatual)
                     datual = evisitados[ipai]
-                    eatual, epai = datual
+                    natual, eatual, epai = datual
 
                 ecaminho.append(eatual)
 
-                problema.solucao = Solucao(n, ecaminho[::-1], problema.emeta)
+                problema.solucao = Solucao(n, ecaminho[::-1], prof, problema.emeta)
 
                 return True
 
             nestados = problema.operador(eatual)
 
-            aux = list(map(lambda de: de[0], evisitados))
+            aux = list(map(lambda de: de[1], evisitados))
             nvisitados = list(filter(lambda e: e not in aux, nestados))
-            nvisitados = list(map(lambda e: (e, eatual), nvisitados))
+            nvisitados = list(map(lambda e: (natual + 1, e, eatual), nvisitados))
 
             eavisitar.extend(nvisitados)
-            eavisitar.sort(key = lambda de: de[0].h(problema.emeta))
+            eavisitar.sort(key = lambda de: de[1].h(problema.emeta))
         
         return False
     
 
     @staticmethod
     def astar(problema: Problema) -> bool:
-        eavisitar = [(problema.einicial, None)]
+        eavisitar = [(0, problema.einicial, None)]
         problema.einicial.g = 0
 
         evisitados = []
 
         while eavisitar:
             datual = eavisitar.pop(0)
-            eatual, epai = datual
+            natual, eatual, epai = datual
 
             evisitados.append(datual)
 
             if problema.teste_objetivo(eatual):
                 ecaminho = []
                 n = len(evisitados)
+                prof = natual
 
                 while epai is not None:
                     for i in range(0, n):
-                        if evisitados[i][0] == epai:
+                        if evisitados[i][1] == epai:
                             ipai = i
                             break
                     
                     ecaminho.append(eatual)
                     datual = evisitados[ipai]
-                    eatual, epai = datual
+                    natual, eatual, epai = datual
 
                 ecaminho.append(eatual)
 
-                problema.solucao = Solucao(n, ecaminho[::-1], problema.emeta)
+                problema.solucao = Solucao(n, ecaminho[::-1], prof, problema.emeta)
 
                 return True
 
             nestados = problema.operador(eatual)
 
-            aux = list(map(lambda de: de[0], evisitados))
+            aux = list(map(lambda de: de[1], evisitados))
             nvisitados = list(filter(lambda e: e not in aux, nestados))
 
             for nv in nvisitados:
                 nv.g = problema.relacao(nv, eatual) + eatual.g
 
-            nvisitados = list(map(lambda e: (e, eatual), nvisitados))
+            nvisitados = list(map(lambda e: (natual + 1, e, eatual), nvisitados))
 
             eavisitar.extend(nvisitados)
-            eavisitar.sort(key = lambda de: de[0].g + de[0].h(problema.emeta))
+            eavisitar.sort(key = lambda de: de[1].g + de[1].h(problema.emeta))
         
         return False
 
 
     @staticmethod
     def subida_encosta(problema: Problema, minimization = True) -> None:
-        
         eatual = problema.einicial
         achou = False
         caminho = []
-        
         caminho.append(eatual)
 
         while True:
             if problema.teste_objetivo(eatual):
-                solucao = Solucao(len(caminho), caminho, problema.emeta)
+                solucao = Solucao(len(caminho), caminho, len(caminho) - 1, problema.emeta)
                 achou = True
                 break
 
             suc = eatual.sucessor_hill_climbing(problema, minimization)
 
             if suc is None:
-                solucao = Solucao(len(caminho), caminho, problema.emeta)
+                solucao = Solucao(len(caminho), caminho, len(caminho) - 1, problema.emeta)
                 achou = False
                 break
 
@@ -220,12 +188,11 @@ class Busca:
         mov_lat = False
         evisitados = []
         caminho = []
-        
         caminho.append(eatual)
 
         while True:
             if problema.teste_objetivo(eatual):
-                solucao = Solucao(len(caminho), caminho, problema.emeta)
+                solucao = Solucao(len(caminho), caminho, len(caminho) - 1, problema.emeta)
                 achou = True
                 break
 
@@ -264,7 +231,6 @@ class Busca:
     def recristalizacao_simulada(problema: Problema, l = 10**6, minimization = True) -> None:
         ecorrente = problema.einicial
         count = 1
-
         mapeamento = [100 * random.random() for i in range(0, l)]
 
         while mapeamento:
@@ -272,7 +238,7 @@ class Busca:
 
             objetivou = problema.teste_objetivo(ecorrente)
             if T == 0 or objetivou:
-                problema.solucao = Solucao(count, [ecorrente], problema.emeta)
+                problema.solucao = Solucao(count, [ecorrente], count - 1, problema.emeta)
                 return objetivou
 
             proximo = random.choice(problema.operador(ecorrente))
@@ -285,5 +251,5 @@ class Busca:
                 probabilidade = math.exp(dE / T)
                 ecorrente = random.choices([ecorrente, proximo], weights=[1-probabilidade, probabilidade])[0]
 
-        problema.solucao = Solucao(count, [ecorrente], problema.emeta)
+        problema.solucao = Solucao(count, [ecorrente], count - 1, problema.emeta)
         return False
